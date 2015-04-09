@@ -1,0 +1,34 @@
+{
+  "name": "pycon-2015-cart-screen",
+  "version": "0.0.0",
+  "description": "CART screen for PyCon 2015",
+  "main": "index.js",
+  "scripts": {
+    "build": "./node_modules/.bin/browserify src/index.js -o static/index.js",
+    "lint": "./node_modules/.bin/eslint src/*.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PyCon/2015-cart-screen.git"
+  },
+  "keywords": [
+    "cart"
+  ],
+  "author": "Kamal Marhubi",
+  "license": "APLv2",
+  "bugs": {
+    "url": "https://github.com/PyCon/2015-cart-screen/issues"
+  },
+  "homepage": "https://github.com/PyCon/2015-cart-screen",
+  "dependencies": {
+    "clone": "^1.0.2",
+    "extend": "^2.0.0",
+    "sorted-object": "^1.0.0",
+    "url": "^0.10.3"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.8",
+    "eslint": "^0.18.0"
+  }
+}
