@@ -6,6 +6,9 @@ var sortedObject = require("sorted-object");
 var url = require("url");
 
 var baseUrl = url.parse("https://www.streamtext.net/player", true);
+// Because https://us.ycon.org does not set CORS headers, we have our own copy
+// of the conference data.
+var conferenceJsonUrl = "static/conference.json";
 
 // For a list of available query parameters, see
 //   https://streamtext.zendesk.com/entries/21721966-controlling-the-streaming-text-page-display

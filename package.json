@@ -4,7 +4,9 @@
   "description": "CART screen for PyCon 2015",
   "main": "index.js",
   "scripts": {
-    "build": "./node_modules/.bin/browserify src/index.js -o static/index.js",
+    "fetch": "curl --silent --show-error https://us.pycon.org/2015/schedule/conference.json > static/conference.json",
+    "browserify": "./node_modules/.bin/browserify src/index.js -o static/index.js",
+    "build": "npm run browserify && npm run fetch",
     "lint": "./node_modules/.bin/eslint src/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
