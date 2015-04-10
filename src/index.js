@@ -15,7 +15,7 @@ var queryParams = {
     fgc: "fff",
     bgc: "transparent",
     ff: "helvetica,arial,sans-serif",
-    fs: "18",
+    fs: "42",
     spacing: "1.8",
     "content-style": "overflow:hidden"
 }
