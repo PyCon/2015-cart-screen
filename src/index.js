@@ -17,7 +17,7 @@ var queryParams = {
     ff: "helvetica,arial,sans-serif",
     fs: "42",
     spacing: "1.8",
-    "content-style": "overflow:hidden"
+    "content-style": "overflow:hidden; text-transform: uppercase"
 }
 
 function createStreamTextUrl(eventId) {
