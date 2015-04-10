@@ -1,10 +1,10 @@
 (function() {  // IIFE
 
 "use strict";
-var url = require("url");
-var clone = require("clone");
-var extend = require("extend");
+var _ = require("lodash");
 var sortedObject = require("sorted-object");
+var url = require("url");
+
 var baseUrl = url.parse("https://www.streamtext.net/player", true);
 
 // For a list of available query parameters, see
@@ -24,8 +24,8 @@ var queryParams = {
 };
 
 function createStreamTextUrl(eventId) {
-    var urlObj = clone(baseUrl);
-    urlObj.query = sortedObject(extend(clone(queryParams), { event: eventId }));
+    var urlObj = _.clone(baseUrl);
+    urlObj.query = sortedObject(_.extend(_.clone(queryParams), { event: eventId }));
     return url.format(urlObj);
 }
 
