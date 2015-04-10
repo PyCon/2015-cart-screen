@@ -8,6 +8,12 @@
     "lint": "./node_modules/.bin/eslint src/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "eslintConfig": {
+    "env": {
+      "browser": true,
+      "node": true
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/PyCon/2015-cart-screen.git"
