@@ -26,9 +26,22 @@ function createStreamTextUrl(eventId) {
     return url.format(urlObj);
 }
 
-var streamTextUrl = url.parse(window.prompt("Enter URL"), true);
-var iframe = document.createElement("iframe");
-iframe.src = createStreamTextUrl(streamTextUrl.query.event);
-iframe.className = "content";
-iframe.id = "stream-text-embed";
-document.getElementById("stream-text-container").appendChild(iframe);
+function extractEventId(streamTextUrl) {
+    var urlObj = url.parse(streamTextUrl, true);
+    return urlObj.query.event;
+}
+
+function createIframe(streamTextUrl) {
+    var iframe = document.createElement("iframe");
+    iframe.src = streamTextUrl;
+    iframe.className = "content";
+    iframe.id = "stream-text-embed";
+    return iframe;
+}
+
+function getStreamTextUrl() {
+    var inputUrl = window.prompt("Enter URL");  // eslint-disable-line no-alert
+    return createStreamTextUrl(extractEventId(inputUrl, true));
+}
+
+document.getElementById("stream-text-container").appendChild(createIframe(getStreamTextUrl()));
