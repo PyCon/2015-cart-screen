@@ -8,7 +8,7 @@ body, body * {
 }
 
 body {
-  background: #231f20;
+  background: black;
   position: relative;
 }
 
@@ -17,7 +17,7 @@ body {
   max-width: 1024px !important;
   height: 768px !important;
   max-height: 768px !important;
-  background: url('img/background.png') no-repeat top left #231f20;
+  background: black;
   margin: 0 auto;
   position: relative;
 }
