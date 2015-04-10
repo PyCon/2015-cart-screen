@@ -1,3 +1,6 @@
+(function() {  // IIFE
+
+"use strict";
 var url = require("url");
 var clone = require("clone");
 var extend = require("extend");
@@ -45,3 +48,5 @@ function getStreamTextUrl() {
 }
 
 document.getElementById("stream-text-container").appendChild(createIframe(getStreamTextUrl()));
+
+})();  // IIFE
