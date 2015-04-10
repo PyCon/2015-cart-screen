@@ -18,10 +18,10 @@ var queryParams = {
     fs: "42",
     spacing: "1.8",
     "content-style": "overflow:hidden; text-transform: uppercase"
-}
+};
 
 function createStreamTextUrl(eventId) {
-    urlObj = clone(baseUrl);
+    var urlObj = clone(baseUrl);
     urlObj.query = sortedObject(extend(clone(queryParams), { event: eventId }));
     return url.format(urlObj);
 }
