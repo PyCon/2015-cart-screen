@@ -30,7 +30,9 @@
   },
   "homepage": "https://github.com/PyCon/2015-cart-screen",
   "dependencies": {
+    "http-browserify": "^1.7.0",
     "lodash": "^3.6.0",
+    "moment-timezone": "^0.3.1",
     "sorted-object": "^1.0.0",
     "url": "^0.10.3"
   },

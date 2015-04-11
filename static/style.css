@@ -47,6 +47,10 @@ body {
   height: 465px;
 }
 
+.talk-info {
+  color: white;
+}
+
 .sponsors {
   background: #fff;
   height: 125px;

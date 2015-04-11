@@ -2,6 +2,8 @@
 
 "use strict";
 var _ = require("lodash");
+var http = require("http-browserify");
+var moment = require("moment-timezone");
 var sortedObject = require("sorted-object");
 var url = require("url");
 
@@ -50,6 +52,50 @@ function getStreamTextUrl() {
     return createStreamTextUrl(extractEventId(inputUrl, true));
 }
 
+function normalizeRoomName(room) {
+    return room.toLowerCase().replace("room ", "");
+}
+
+function montreal(mmnt) { return mmnt.tz("America/Montreal"); }
+// function now() { return montreal(moment("2015-04-10T16:35:00")); }  // for testing
+function now() { return montreal(moment()); }
+function findCurrentTalk(talks) {
+    return _.find(talks, function (talk) {
+        var start = montreal(moment(talk.start));
+        var end = montreal(moment(talk.end));
+        return start.isBefore(now()) && now().isBefore(end);
+    });
+}
+
+function getTalksForRoom(room, allTalks) {
+    var keyedTalks = _.groupBy(allTalks, function(talk) { return normalizeRoomName(talk.room); });
+    return keyedTalks[room];
+}
+
+function createSpeakerInfoDiv(authors, title) {
+    var div = document.createElement("div");
+    div.className = "talk-info";
+    div.id = "talk-info";
+    div.innerHTML = "<p>" + authors.join(", ") + "<p>" + title;
+    return div;
+}
+
+function fillTalkInfo(talk) {
+    document.getElementById("talk-info-container").appendChild(createSpeakerInfoDiv(talk.authors, talk.name));
+}
+
+http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
+    var data = [];
+    res.on("data", function(buf) { data.push(buf); });
+    res.on("end", function() {
+        var allTalks = JSON.parse(data.join(""));
+        var room = url.parse(window.location.href, true).query.room;
+        var roomTalks = getTalksForRoom(room, allTalks);
+        var currentTalk = findCurrentTalk(roomTalks);
+        fillTalkInfo(currentTalk);
+    });
+    res.on("error", function(e) { console.log(e); });
+});
 document.getElementById("stream-text-container").appendChild(createIframe(getStreamTextUrl()));
 
 })();  // IIFE
