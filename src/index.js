@@ -68,7 +68,7 @@ function createSpeakerInfoDiv(authors, title) {
     var div = document.createElement("div");
     div.className = "talk-info";
     div.id = "talk-info";
-    div.innerHTML =  "<p>" + title + "<p>" + authors.join(", ");
+    div.innerHTML = "<p>" + title + "<p>" + authors.join(", ");
     return div;
 }
 
