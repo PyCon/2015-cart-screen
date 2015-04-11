@@ -40,11 +40,6 @@ function extractEventId(streamTextUrl) {
     return urlObj.query.event;
 }
 
-function getStreamTextUrl() {
-    var inputUrl = window.prompt("Enter URL");  // eslint-disable-line no-alert
-    return createStreamTextUrl(extractEventId(inputUrl, true));
-}
-
 function normalizeRoomName(room) {
     return room.toLowerCase().replace("room ", "");
 }
@@ -86,4 +81,12 @@ http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
     res.on("error", function(e) { console.log(e); });
 });
 
-domready(function() { document.getElementById("stream-text-embed").src = getStreamTextUrl(); });
+function getEventId() {
+    return extractEventId(window.prompt("Enter URL"));  // eslint-disable-line no-alert
+}
+
+function setCurrentEvent(eventId) {
+    document.getElementById("stream-text-embed").src = createStreamTextUrl(eventId);
+}
+
+domready(function() { setCurrentEvent(getEventId()); });
