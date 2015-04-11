@@ -5,6 +5,7 @@ var domready = require("domready");
 var http = require("http-browserify");
 var moment = require("moment-timezone");
 var sortedObject = require("sorted-object");
+var talkInfo = require("./talk-info.hbs");
 var url = require("url");
 
 var baseUrl = url.parse("https://www.streamtext.net/player", true);
@@ -65,15 +66,12 @@ function getTalksForRoom(room, allTalks) {
 }
 
 function createSpeakerInfoDiv(authors, title) {
-    var div = document.createElement("div");
-    div.className = "talk-info";
-    div.id = "talk-info";
-    div.innerHTML = "<p>" + title + "<p>" + authors.join(", ");
+    var div = talkInfo({title: title, authors: authors.join(", ")});
     return div;
 }
 
 function fillTalkInfo(talk) {
-    document.getElementById("talk-info-container").appendChild(createSpeakerInfoDiv(talk.authors, talk.name));
+    document.getElementById("talk-info-container").innerHTML = createSpeakerInfoDiv(talk.authors, talk.name);
 }
 
 http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {

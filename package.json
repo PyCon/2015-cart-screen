@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "fetch": "curl --silent --show-error https://us.pycon.org/2015/schedule/conference.json > static/conference.json",
-    "browserify": "./node_modules/.bin/browserify src/index.js -o static/index.js",
+    "browserify": "./node_modules/.bin/browserify -t hbsfy src/index.js -o static/index.js",
     "build": "npm run browserify",
     "lint": "./node_modules/.bin/eslint src/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -39,6 +39,8 @@
   },
   "devDependencies": {
     "browserify": "^9.0.8",
-    "eslint": "^0.18.0"
+    "eslint": "^0.18.0",
+    "handlebars": "^3.0.1",
+    "hbsfy": "^2.2.1"
   }
 }
