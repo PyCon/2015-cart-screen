@@ -23749,7 +23749,14 @@ function setCurrentEvent(eventId) {
 }
 
 function getCurrentEvent() {
-    return url(document.getElementById("stream-text-embed").src, true).query.event;
+    return url.parse(document.getElementById("stream-text-embed").src, true).query.event;
+}
+
+var roomTalks;  // global
+
+function updateTitleInfo() {
+    var currentTalk = findCurrentTalk(roomTalks);
+    fillTalkInfo(currentTalk);
 }
 
 domready(function() {
@@ -23759,9 +23766,8 @@ domready(function() {
         res.on("data", function(buf) { data.push(buf); });
         res.on("end", function() {
             var allTalks = JSON.parse(data.join(""));
-            var roomTalks = getTalksForRoom(room, allTalks);
-            var currentTalk = findCurrentTalk(roomTalks);
-            fillTalkInfo(currentTalk);
+            roomTalks = getTalksForRoom(room, allTalks);
+            updateTitleInfo();
         });
         res.on("error", function(e) { console.log(e); });
     });
@@ -23779,6 +23785,7 @@ domready(function() {
     window.setInterval(function() {
         lastCheckinRef.set(montreal(now()).format("LTS"));
         mostRecentRef.set(getCurrentEvent());
+        updateTitleInfo();
     }, 5000 /* 5 seconds */);
 });
 
