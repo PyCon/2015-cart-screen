@@ -66,8 +66,7 @@ function getTalksForRoom(room, allTalks) {
 }
 
 function createSpeakerInfoDiv(authors, title) {
-    var div = talkInfo({title: title, authors: authors.join(", ")});
-    return div;
+    return talkInfo({title: title, authors: authors.join(", ")});
 }
 
 function fillTalkInfo(talk) {
