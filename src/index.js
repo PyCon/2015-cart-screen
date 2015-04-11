@@ -1,6 +1,5 @@
-(function() {  // IIFE
-
 "use strict";
+
 var _ = require("lodash");
 var domready = require("domready");
 var http = require("http-browserify");
@@ -91,4 +90,3 @@ http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
 });
 
 domready(function() { document.getElementById("stream-text-embed").src = getStreamTextUrl(); });
-})();  // IIFE
