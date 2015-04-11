@@ -77,6 +77,10 @@ function setCurrentEvent(eventId) {
     document.getElementById("stream-text-embed").src = createStreamTextUrl(eventId);
 }
 
+function getCurrentEvent() {
+    return url(document.getElementById("stream-text-embed").src, true).query.event;
+}
+
 domready(function() {
     var room = url.parse(window.location.href, true).query.room;
     http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
@@ -91,6 +95,18 @@ domready(function() {
         res.on("error", function(e) { console.log(e); });
     });
 
-    var ref = new Firebase("https://radiant-heat-9304.firebaseio.com/rooms/" + room + "/event-id");
-    ref.on("value", function(snapshot) { console.log(snapshot.val()); setCurrentEvent(snapshot.val()); });
- });
+    var ref = new Firebase("https://radiant-heat-9304.firebaseio.com/rooms/" + room);
+    var eventIdRef = ref.child("event-id");
+    var mostRecentRef = ref.child("most-recent-event-id");
+    var lastCheckinRef = ref.child("last-checkin");
+
+    eventIdRef.on("value", function(snapshot) {
+        console.log(snapshot.val());
+        mostRecentRef.set(snapshot.val());
+        setCurrentEvent(snapshot.val());
+    });
+    window.setInterval(function() {
+        lastCheckinRef.set(montreal(now()).format("LTS"));
+        mostRecentRef.set(getCurrentEvent());
+    }, 5000 /* 5 seconds */);
+});
