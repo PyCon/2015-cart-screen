@@ -2,6 +2,7 @@
 
 "use strict";
 var _ = require("lodash");
+var domready = require("domready");
 var http = require("http-browserify");
 var moment = require("moment-timezone");
 var sortedObject = require("sorted-object");
@@ -37,14 +38,6 @@ function createStreamTextUrl(eventId) {
 function extractEventId(streamTextUrl) {
     var urlObj = url.parse(streamTextUrl, true);
     return urlObj.query.event;
-}
-
-function createIframe(streamTextUrl) {
-    var iframe = document.createElement("iframe");
-    iframe.src = streamTextUrl;
-    iframe.className = "content";
-    iframe.id = "stream-text-embed";
-    return iframe;
 }
 
 function getStreamTextUrl() {
@@ -96,6 +89,6 @@ http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
     });
     res.on("error", function(e) { console.log(e); });
 });
-document.getElementById("stream-text-container").appendChild(createIframe(getStreamTextUrl()));
 
+domready(function() { document.getElementById("stream-text-embed").src = getStreamTextUrl(); });
 })();  // IIFE
