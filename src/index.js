@@ -2,6 +2,7 @@
 
 var _ = require("lodash");
 var domready = require("domready");
+var Firebase = require("firebase");
 var http = require("http-browserify");
 var moment = require("moment-timezone");
 var sortedObject = require("sorted-object");
@@ -90,5 +91,6 @@ domready(function() {
         res.on("error", function(e) { console.log(e); });
     });
 
-    setCurrentEvent(getEventId());
+    var ref = new Firebase("https://radiant-heat-9304.firebaseio.com/rooms/710a/event-id");
+    ref.on("value", function(snapshot) { console.log(snapshot.val()); setCurrentEvent(snapshot.val()); });
  });
