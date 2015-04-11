@@ -55,7 +55,7 @@ function findCurrentTalk(talks) {
     return _.find(talks, function (talk) {
         var start = montreal(moment(talk.start));
         var end = montreal(moment(talk.end));
-        return start.isBefore(now()) && now().isBefore(end);
+        return now().isBetween(start.subtract(5, "minutes"), end.add(5, "minutes"));
     });
 }
 
