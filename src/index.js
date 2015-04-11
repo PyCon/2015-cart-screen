@@ -68,19 +68,6 @@ function fillTalkInfo(talk) {
     document.getElementById("talk-info-container").innerHTML = createSpeakerInfoDiv(talk.authors, talk.name);
 }
 
-http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
-    var data = [];
-    res.on("data", function(buf) { data.push(buf); });
-    res.on("end", function() {
-        var allTalks = JSON.parse(data.join(""));
-        var room = url.parse(window.location.href, true).query.room;
-        var roomTalks = getTalksForRoom(room, allTalks);
-        var currentTalk = findCurrentTalk(roomTalks);
-        fillTalkInfo(currentTalk);
-    });
-    res.on("error", function(e) { console.log(e); });
-});
-
 function getEventId() {
     return extractEventId(window.prompt("Enter URL"));  // eslint-disable-line no-alert
 }
@@ -89,4 +76,19 @@ function setCurrentEvent(eventId) {
     document.getElementById("stream-text-embed").src = createStreamTextUrl(eventId);
 }
 
-domready(function() { setCurrentEvent(getEventId()); });
+domready(function() {
+    http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
+        var data = [];
+        res.on("data", function(buf) { data.push(buf); });
+        res.on("end", function() {
+            var allTalks = JSON.parse(data.join(""));
+            var room = url.parse(window.location.href, true).query.room;
+            var roomTalks = getTalksForRoom(room, allTalks);
+            var currentTalk = findCurrentTalk(roomTalks);
+            fillTalkInfo(currentTalk);
+        });
+        res.on("error", function(e) { console.log(e); });
+    });
+
+    setCurrentEvent(getEventId());
+ });
