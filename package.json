@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "fetch": "curl --silent --show-error https://us.pycon.org/2015/schedule/conference.json > static/conference.json",
-    "browserify": "./node_modules/.bin/browserify -t hbsfy src/index.js -o static/index.js",
-    "build": "npm run browserify",
+    "browserify-manual": "./node_modules/.bin/browserify -t hbsfy src/index.js -o static/index.js",
+    "browserify-live": "./node_modules/.bin/browserify -t hbsfy src/live.js -o static/live.js",
+    "build": "npm run browserify-manual && npm run browserify-live",
     "lint": "./node_modules/.bin/eslint src/*.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

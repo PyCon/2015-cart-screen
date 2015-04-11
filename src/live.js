@@ -2,6 +2,7 @@
 
 var _ = require("lodash");
 var domready = require("domready");
+var Firebase = require("firebase");
 var http = require("http-browserify");
 var moment = require("moment-timezone");
 var sortedObject = require("sorted-object");
@@ -77,12 +78,12 @@ function setCurrentEvent(eventId) {
 }
 
 domready(function() {
+    var room = url.parse(window.location.href, true).query.room;
     http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
         var data = [];
         res.on("data", function(buf) { data.push(buf); });
         res.on("end", function() {
             var allTalks = JSON.parse(data.join(""));
-            var room = url.parse(window.location.href, true).query.room;
             var roomTalks = getTalksForRoom(room, allTalks);
             var currentTalk = findCurrentTalk(roomTalks);
             fillTalkInfo(currentTalk);
@@ -90,5 +91,6 @@ domready(function() {
         res.on("error", function(e) { console.log(e); });
     });
 
-    setCurrentEvent(getEventId());
+    var ref = new Firebase("https://radiant-heat-9304.firebaseio.com/rooms/" + room + "/event-id");
+    ref.on("value", function(snapshot) { console.log(snapshot.val()); setCurrentEvent(snapshot.val()); });
  });
