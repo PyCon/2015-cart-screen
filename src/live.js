@@ -78,7 +78,7 @@ function setCurrentEvent(eventId) {
 }
 
 function getCurrentEvent() {
-    return url(document.getElementById("stream-text-embed").src, true).query.event;
+    return url.parse(document.getElementById("stream-text-embed").src, true).query.event;
 }
 
 domready(function() {
