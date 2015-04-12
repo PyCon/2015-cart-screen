@@ -18614,6 +18614,8 @@ var url = require("url");
 var xhr = require("xhr");
 
 var baseUrl = url.parse("https://www.streamtext.net/player", true);
+var streamActiveUrl = url.parse("http://www.streamtext.net/text-data.ashx", true);
+
 // Because https://us.ycon.org does not set CORS headers, we have our own copy
 // of the conference data.
 var conferenceJsonUrl = "static/conference.json";  // eslint-disable-line no-unused-vars
@@ -18699,11 +18701,18 @@ domready(function() {
     var eventIdRef = ref.child("event-id");
     var mostRecentRef = ref.child("most-recent-event-id");
     var lastCheckinRef = ref.child("last-checkin");
+    var streamActiveRef = ref.child("stream-active");
 
     eventIdRef.on("value", function(snapshot) {
         console.log(snapshot.val());
         mostRecentRef.set(snapshot.val());
         setCurrentEvent(snapshot.val());
+        var urlObj = _.clone(streamActiveUrl);
+        urlObj.query.event = getCurrentEvent();
+        xhr({uri: url.format(urlObj)},
+            function(err, resp, body) {
+                streamActiveRef.set(resp.statusCode === 200);
+            });
     });
     window.setInterval(function() {
         lastCheckinRef.set(montreal(now()).format("LTS"));
@@ -18713,6 +18722,12 @@ domready(function() {
                 var allTalks = JSON.parse(body);
                 roomTalks = getTalksForRoom(room, allTalks);
                 updateTitleInfo();
+            });
+        var urlObj = _.clone(streamActiveUrl);
+        urlObj.query.event = getCurrentEvent();
+        xhr({uri: url.format(urlObj)},
+            function(err, resp, body) {
+                streamActiveRef.set(resp.statusCode === 200);
             });
         updateTitleInfo();
     }, 5000 /* 5 seconds */);
