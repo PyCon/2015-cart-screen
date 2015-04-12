@@ -3,11 +3,11 @@
 var _ = require("lodash");
 var domready = require("domready");
 var Firebase = require("firebase");
-var http = require("http-browserify");
 var moment = require("moment-timezone");
 var sortedObject = require("sorted-object");
 var talkInfo = require("./talk-info.hbs");
 var url = require("url");
+var xhr = require("xhr");
 
 var baseUrl = url.parse("https://www.streamtext.net/player", true);
 // Because https://us.ycon.org does not set CORS headers, we have our own copy
@@ -90,16 +90,6 @@ function updateTitleInfo() {
 
 domready(function() {
     var room = url.parse(window.location.href, true).query.room;
-    http.get(url.resolve(window.location.href, conferenceJsonUrl), function (res) {
-        var data = [];
-        res.on("data", function(buf) { data.push(buf); });
-        res.on("end", function() {
-            var allTalks = JSON.parse(data.join(""));
-            roomTalks = getTalksForRoom(room, allTalks);
-            updateTitleInfo();
-        });
-        res.on("error", function(e) { console.log(e); });
-    });
 
     var ref = new Firebase("https://radiant-heat-9304.firebaseio.com/rooms/" + room);
     var eventIdRef = ref.child("event-id");
@@ -114,6 +104,12 @@ domready(function() {
     window.setInterval(function() {
         lastCheckinRef.set(montreal(now()).format("LTS"));
         mostRecentRef.set(getCurrentEvent());
+        xhr({uri: url.resolve(window.location.href, conferenceJsonUrl)},
+            function(err, resp, body) {
+                var allTalks = JSON.parse(body);
+                roomTalks = getTalksForRoom(room, allTalks);
+                updateTitleInfo();
+            });
         updateTitleInfo();
     }, 5000 /* 5 seconds */);
 });

@@ -37,7 +37,8 @@
     "lodash": "^3.6.0",
     "moment-timezone": "^0.3.1",
     "sorted-object": "^1.0.0",
-    "url": "^0.10.3"
+    "url": "^0.10.3",
+    "xhr": "^2.0.1"
   },
   "devDependencies": {
     "browserify": "^9.0.8",
