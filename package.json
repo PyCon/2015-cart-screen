@@ -43,7 +43,7 @@
   "devDependencies": {
     "browserify": "^9.0.8",
     "eslint": "^0.18.0",
-    "handlebars": "^3.0.1",
+    "handlebars": "^4.5.3",
     "hbsfy": "^2.2.1"
   }
 }
